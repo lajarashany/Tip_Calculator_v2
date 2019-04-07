@@ -28,7 +28,6 @@ import java.text.NumberFormat;
 
 public class MainActivityTip extends AppCompatActivity  implements TextWatcher, SeekBar.OnSeekBarChangeListener, AdapterView.OnItemSelectedListener {
 
-    //declare your variables for the widgets
     private EditText editTextBillAmount;
     private TextView textViewBillAmount;
     private TextView textViewPercent;
@@ -49,11 +48,10 @@ public class MainActivityTip extends AppCompatActivity  implements TextWatcher, 
     int bill_split_is = 0;
 
 
-    //declare the variables for the calculations
+    
     private double billAmount = 0.0;
     private double percent = 0.0;
 
-    //set the number formats to be used for the $ amounts , and % amounts
     private static final NumberFormat currencyFormat =
             NumberFormat.getCurrencyInstance();
     private static final NumberFormat percentFormat =
@@ -65,27 +63,22 @@ public class MainActivityTip extends AppCompatActivity  implements TextWatcher, 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_tip);
-        //add Listeners to Widgets
-
-        // split-total//
+     
         split_total_textview = (TextView) findViewById(R.id.split_total_textview);
 
 
         total_split = (TextView) findViewById(R.id.total_split);
 
 
-        //radio buttons//
         RD_TIP = (RadioButton) findViewById(R.id.RD_TIP);
         RD_TOTAL = (RadioButton) findViewById(R.id.RD_TOTAL);
         RD_NO = (RadioButton) findViewById(R.id.RD_NO);
         RoundText = (TextView) findViewById(R.id.RoundText);
 
 
-        ////////////////////////
-
         editTextBillAmount = (EditText) findViewById(R.id.editTextBillAmount);
         editTextBillAmount.addTextChangedListener((TextWatcher) this);
-
+        
         textViewBillAmount = (TextView) findViewById(R.id.textViewBillAmount);
 
         textViewPercent = (TextView) findViewById(R.id.textViewPercent);
@@ -110,14 +103,13 @@ public class MainActivityTip extends AppCompatActivity  implements TextWatcher, 
             spinner.setOnItemSelectedListener(this);
             spinner.setAdapter(adapter);
         }
-        //  adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+       
 
 
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.activity_menu, menu);
         return true;
     }
@@ -137,7 +129,6 @@ public class MainActivityTip extends AppCompatActivity  implements TextWatcher, 
                 return true;
 
             case R.id.action_info:
-                // User chose the "Info" action, mark the current item
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivityTip.this);
                 alertDialog.setTitle("Split Info");
                 alertDialog.setMessage("Spinner is used to split the total among friends.");
@@ -155,18 +146,11 @@ public class MainActivityTip extends AppCompatActivity  implements TextWatcher, 
 
     }
 
-    /*
-    Note:   int i, int i1, and int i2
-            represent start, before, count respectively
-            The charSequence is converted to a String and parsed to a double for you
-     */
-
-
+ 
     @Override
     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
         Log.d("MainActivity", "inside onTextChanged method: charSequence= " + charSequence);
-        //surround risky calculations with try catch (what if billAmount is 0 ?
-        //charSequence is converted to a String and parsed to a double for you
+   
 
 
         try {
@@ -211,17 +195,13 @@ public class MainActivityTip extends AppCompatActivity  implements TextWatcher, 
     }
 
 
-//aqui
-
-
-
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
 
     public void onRadioButtonClicked(View view) {
-        // Is the button now checked?
+        
         boolean checked = ((RadioButton) view).isChecked();
 
 
@@ -245,11 +225,9 @@ public class MainActivityTip extends AppCompatActivity  implements TextWatcher, 
                     bill_split_is = (int) ((double)tipRounded+billAmount);
 
 
-
-
                 }
 
-                //TIP GETS ROUNDED
+               
                 break;
 
             case R.id.RD_TOTAL:
@@ -269,7 +247,7 @@ public class MainActivityTip extends AppCompatActivity  implements TextWatcher, 
                     System.out.println("total:" + total);
 
                 }
-                //TOTAL BILL GETS ROUNDED
+            
                 break;
 
             case R.id.RD_NO:
@@ -282,7 +260,7 @@ public class MainActivityTip extends AppCompatActivity  implements TextWatcher, 
                     textViewBillAmount.setText(String.valueOf(total));
 
                 }
-                // TIP AND TOTAL STAY THE SAME
+               
                 break;
         }
     }
@@ -293,8 +271,8 @@ public class MainActivityTip extends AppCompatActivity  implements TextWatcher, 
         Log.d(TAG, "inside on ItemSelected");
         spinner_label = adapterView.getItemAtPosition(pos).toString();
         Toast.makeText(this, "You chose " + spinner_label, Toast.LENGTH_LONG).show();
-        //   Do something here with the item
-//
+    
+
         switch (pos) {
             case 1:
                 Toast.makeText(adapterView.getContext(), "Bill for 2", Toast.LENGTH_SHORT).show();
@@ -328,18 +306,10 @@ public class MainActivityTip extends AppCompatActivity  implements TextWatcher, 
     private void calculate() {
         Log.d("MainActivity", "inside calculate method");
 
-
-        // format percent and display in percentTextView
         textViewPercent.setText("" + percent + "%");
 
-
-        // calculate the tip and total
         double tip = billAmount * percent / 100;
         double total = billAmount + tip;
-
-
-        // display tip and total formatted as currency
-        //user currencyFormat instead of percentFormat to set the textViewTip
 
         tipTextView.setText(currencyFormat.format(tip));
         textViewBillAmount.setText(currencyFormat.format(total));
